@@ -14,7 +14,7 @@ def client_thread(sock, address):
         msg = sock.recv(1024).decode()
         if not msg:
             break
-        print(address, " ", msg)
+        print(address, ' ', msg)
 
         msgQueue.put(msg.encode())
 
@@ -45,7 +45,7 @@ def server():
     while True:
         #Accept connections from within while loop
         conn, address = s.accept() 
-        print("Connection from: {}".format(address))
+        print('Connection from: {}'.format(address))
         clientList.append(conn)
         # Start a thread for the client.
         t1 = threading.Thread(target=client_thread, args=((conn, address)))
