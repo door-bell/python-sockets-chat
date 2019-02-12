@@ -16,8 +16,8 @@ def client(sock, nick='Default'):
 
     while True:
         message = input('{} -> '.format(nick))  # take input
-        sock.send(message.encode())
-        time.sleep(1)
+        sock.send('{}: {}'.format(nick, message).encode())
+        time.sleep(0.5)
 
     sock.close()  # close the connection
 
