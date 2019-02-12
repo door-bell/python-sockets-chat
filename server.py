@@ -21,10 +21,12 @@ def client_thread(sock, address):
     sock.close()
 
 def broadcast_thread():
+    # Send all enqueued messages to each client
     while True:
         while not msgQueue.empty():
+            msg = msgQueue.get()
             for client in clientList:
-                client.send(msgQueue.get())
+                client.send(msg)
 
 def server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
