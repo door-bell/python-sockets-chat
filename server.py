@@ -13,6 +13,9 @@ def client_thread(sock, address):
         if not msg:
             break
         print(address, " ", msg)
+
+        sock.send(msg.encode())
+
     sock.close()
 
 def server():
