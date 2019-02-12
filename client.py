@@ -5,10 +5,17 @@ import socket, threading
 HOST = '127.0.0.1'
 PORT = 8555
 
-def client():
-    s = socket.socket()  # instantiate
-    s.connect((HOST, PORT))  # connect to the server
+s = socket.socket()
 
+def listen(HOST, PORT):
+    while True:
+        s.connect((HOST, PORT))
+        data = s.recv(1024).decode()
+
+        print('Recieved: {}'.format(data))
+
+def client():
+    t1 = threading.Thread(target=listen, args=(HOST, PORT))
     message = input(" -> ")  # take input
 
     while message.lower().strip() != 'bye':
