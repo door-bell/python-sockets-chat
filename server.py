@@ -43,11 +43,13 @@ def server():
 
     # Accept connections and open a thread for each one
     while True:
-        conn, address = s.accept() #Accept connections from within while loop
+        #Accept connections from within while loop
+        conn, address = s.accept() 
         print("Connection from: {}".format(address))
         clientList.append(conn)
+        # Start a thread for the client.
         t1 = threading.Thread(target=client_thread, args=((conn, address)))
-        t1.start() # Start a thread for the client.
+        t1.start()
 
     conn.close()
 
