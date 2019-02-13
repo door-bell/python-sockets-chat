@@ -8,6 +8,8 @@ PORT = 8555
 
 clientList = list()
 msgQueue = Queue()
+clientList_lock = threading.Lock()
+msgQueue_lock = threading.Lock()
 
 def client_thread(sock, address):
     while True:
@@ -15,8 +17,9 @@ def client_thread(sock, address):
         if not msg:
             break
         print(address, ' ', msg)
-
+        msgQueue_lock.acquire()
         msgQueue.put(msg.encode())
+        msgQueue_lock.release()
 
     sock.close()
 
@@ -24,9 +27,14 @@ def broadcast_thread():
     # Send all enqueued messages to each client
     while True:
         while not msgQueue.empty():
+            msgQueue_lock.acquire()
             msg = msgQueue.get()
+            msgQueue_lock.release()
+
+            clientList_lock.acquire()
             for client in clientList:
                 client.send(msg)
+            clientList_lock.release()
 
 def server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -46,7 +54,9 @@ def server():
         #Accept connections from within while loop
         conn, address = s.accept() 
         print('Connection from: {}'.format(address))
+        clientList_lock.acquire()
         clientList.append(conn)
+        clientList_lock.release()
         # Start a thread for the client.
         t1 = threading.Thread(target=client_thread, args=((conn, address)))
         t1.start()
