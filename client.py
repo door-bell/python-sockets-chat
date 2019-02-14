@@ -8,13 +8,17 @@ import sys, socket, threading, time
 HOST = '127.0.0.1'
 PORT = 8555
 
+# Printing to stdout is NOT thread safe
+stdout_lock = threading.Lock()
 
 def listen(sock, HOST, PORT):
     while True:
         data = sock.recv(1024).decode()
+        stdout_lock.acquire()
         sys.stdout.write('\r\033[K' + data)
         sys.stdout.flush()
         sys.stdout.write('\n')
+        stdout_lock.release()
 
 def client(sock, nick='Default'):
     t1 = threading.Thread(target=listen, args=(sock, HOST, PORT))
@@ -22,7 +26,9 @@ def client(sock, nick='Default'):
 
     while True:
         message = input('{} > '.format(nick))  # take input
+        stdout_lock.acquire()
         sys.stdout.write('\033[F\033[K')
+        stdout_lock.release()
         sock.send('{}: {}'.format(nick, message).encode())
 
     sock.close()  # close the connection
