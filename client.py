@@ -21,7 +21,7 @@ def listen(sock, HOST, PORT):
         stdout_lock.release()
 
 def client(sock, nick='Default'):
-    t1 = threading.Thread(target=listen, args=(sock, HOST, PORT))
+    t1 = threading.Thread(target=listen, args=(sock, HOST, PORT), daemon=True)
     t1.start()
 
     while True:
@@ -36,7 +36,6 @@ def client(sock, nick='Default'):
     print('Quitting...')
     sock.close()  # close the connection
     quit(0)
-
 
 if __name__ == '__main__':
     # Uncomment to allow custom host:port from user
