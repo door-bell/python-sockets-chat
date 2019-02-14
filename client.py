@@ -26,12 +26,16 @@ def client(sock, nick='Default'):
 
     while True:
         message = input('{} > '.format(nick))  # take input
+        if message.endswith('later'):
+            break
         stdout_lock.acquire()
         sys.stdout.write('\033[F\033[K')
         stdout_lock.release()
         sock.send('{}: {}'.format(nick, message).encode())
 
+    print('Quitting...')
     sock.close()  # close the connection
+    quit(0)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,7 @@ msgQueue_lock = threading.Lock()
 def client_thread(sock, address):
     while True:
         msg = sock.recv(1024).decode()
-        if not msg:
+        if msg.endswith('later'):
             break
         print(address, ' ', msg)
         msgQueue_lock.acquire()
@@ -22,6 +22,11 @@ def client_thread(sock, address):
         msgQueue_lock.release()
 
     sock.close()
+    clientList_lock.acquire()
+    clientList.remove(sock)
+    print('Removed {} from clientList'.format(sock))
+    clientList_lock.release()
+
 
 def broadcast_thread():
     # Send all enqueued messages to each client
@@ -61,7 +66,6 @@ def server():
         t1 = threading.Thread(target=client_thread, args=((conn, address)))
         t1.start()
 
-    conn.close()
 
 
 if __name__ == '__main__':
