@@ -26,7 +26,7 @@ def client_thread(sock, address):
     clientList.remove(sock)
     print('Removed {} from clientList'.format(sock))
     clientList_lock.release()
-
+    return 0
 
 def broadcast_thread():
     # Send all enqueued messages to each client
