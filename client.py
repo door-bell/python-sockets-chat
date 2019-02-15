@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-
-# \033[F # Back to previous line
-# \033[K # Clear line
-
+'''
+Notes on speicial characters used in stdout:
+        \033[F # Back to previous line
+        \033[K # Clear line
+        \r # Carriage return: brings cursor to beginning of the line.
+'''
 import sys, socket, threading, time
 
 HOST = '127.0.0.1'
