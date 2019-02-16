@@ -25,6 +25,7 @@ def listen(sock, HOST, PORT):
 def client(sock, nick='Default'):
     t1 = threading.Thread(target=listen, args=(sock, HOST, PORT), daemon=True)
     t1.start()
+    print('\nConnected Successfully!\n') 
 
     while True:
         message = input('{} > '.format(nick))  # take input
