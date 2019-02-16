@@ -21,7 +21,7 @@ def handleCommand(cmd):
     print('Received command {} from {}'.format(ls[1], ls[0]))
 
     # Commands
-    if ls[1] is 'hello':
+    if ls[1] == 'hello':
         enqueueMessage('{} has connected!'.format(ls[0]))
 
 def client_thread(sock, address):
