@@ -13,6 +13,9 @@ PORT = 8555
 # Printing to stdout is NOT thread safe
 stdout_lock = threading.Lock()
 
+def buildCommand(nick, cmd):
+    return '{}: /{}'.format(nick, cmd)
+
 def listen(sock, HOST, PORT):
     while True:
         data = sock.recv(1024).decode()
@@ -26,6 +29,8 @@ def client(sock, nick='Default'):
     t1 = threading.Thread(target=listen, args=(sock, HOST, PORT), daemon=True)
     t1.start()
     print('\nConnected Successfully!\n') 
+    
+    sock.send(buildCommand(nick, 'hello').encode())
 
     while True:
         message = input('{} > '.format(nick))  # take input

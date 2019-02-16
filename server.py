@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import socket, threading
+import socket, threading, re
 from queue import Queue
 
 HOST = '127.0.0.1'
@@ -11,12 +11,28 @@ msgQueue = Queue()
 clientList_lock = threading.Lock()
 msgQueue_lock = threading.Lock()
 
+def handleCommand(cmd):
+    ls = re.match(r'(.+): /(.+)', cmd)
+    print('Received command {} from {}'.format(ls[1], ls[0]))
+
+    # Commands
+    if ls[1] is 'hello':
+        msgQueue_lock.acquire()
+        msgQueue.put('{} has Connected!'.format(ls[0]))
+        msgQueue_lock.release()
+
 def client_thread(sock, address):
     while True:
         msg = sock.recv(1024).decode()
-        if msg.endswith('later') or len(msg) is 0:
+        if len(msg) is 0: # Detect abrupt disconnect
             break
         print(address, ' ', msg)
+
+        # The / of a command should be 2 characters right of :
+        if msg[msg.index(':') + 2] is '/':
+            handleCommand(msg)
+            continue
+
         msgQueue_lock.acquire()
         msgQueue.put(msg.encode())
         msgQueue_lock.release()
@@ -66,7 +82,6 @@ def server():
         # Start a thread for the client.
         t1 = threading.Thread(target=client_thread, args=((conn, address)))
         t1.start()
-
 
 
 if __name__ == '__main__':
