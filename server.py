@@ -14,13 +14,14 @@ msgQueue_lock = threading.Lock()
 def client_thread(sock, address):
     while True:
         msg = sock.recv(1024).decode()
-        if msg.endswith('later'):
+        if msg.endswith('later') or len(msg) is 0:
             break
         print(address, ' ', msg)
         msgQueue_lock.acquire()
         msgQueue.put(msg.encode())
         msgQueue_lock.release()
 
+    sock.send('\nGoodbye!'.encode())
     sock.close()
     clientList_lock.acquire()
     clientList.remove(sock)
