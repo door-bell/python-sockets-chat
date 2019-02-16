@@ -11,15 +11,18 @@ msgQueue = Queue()
 clientList_lock = threading.Lock()
 msgQueue_lock = threading.Lock()
 
+def enqueueMessage(msg):
+    msgQueue_lock.acquire()
+    msgQueue.put(msg.encode())
+    msgQueue_lock.release()
+
 def handleCommand(cmd):
-    ls = re.match(r'(.+): /(.+)', cmd)
+    ls = re.match(r'(.+): /(.+)', cmd).groups()
     print('Received command {} from {}'.format(ls[1], ls[0]))
 
     # Commands
     if ls[1] is 'hello':
-        msgQueue_lock.acquire()
-        msgQueue.put('{} has Connected!'.format(ls[0]))
-        msgQueue_lock.release()
+        enqueueMessage('{} has connected!'.format(ls[0]))
 
 def client_thread(sock, address):
     while True:
@@ -33,9 +36,7 @@ def client_thread(sock, address):
             handleCommand(msg)
             continue
 
-        msgQueue_lock.acquire()
-        msgQueue.put(msg.encode())
-        msgQueue_lock.release()
+        enqueueMessage(msg)
 
     sock.send('\nGoodbye!'.encode())
     sock.close()
