@@ -6,15 +6,15 @@ from queue import Queue
 HOST = '127.0.0.1'
 PORT = 8555
 
-clientList = list()
-msgQueue = Queue()
-clientList_lock = threading.Lock()
-msgQueue_lock = threading.Lock()
+g_clientList = list()
+g_msgQueue = Queue()
+lock_clientList = threading.Lock()
+lock_msgQueue = threading.Lock()
 
 def enqueueMessage(msg):
-    msgQueue_lock.acquire()
-    msgQueue.put(msg.encode())
-    msgQueue_lock.release()
+    lock_msgQueue.acquire()
+    g_msgQueue.put(msg.encode())
+    lock_msgQueue.release()
 
 def handleCommand(cmd):
     ls = re.match(r'(.+): /(.+)', cmd).groups()
@@ -40,24 +40,24 @@ def client_thread(sock, address):
 
     sock.send('\nGoodbye!'.encode())
     sock.close()
-    clientList_lock.acquire()
-    clientList.remove(sock)
+    lock_clientList.acquire()
+    g_clientList.remove(sock)
     print('Removed {} from clientList'.format(sock))
-    clientList_lock.release()
+    lock_clientList.release()
     return 0
 
 def broadcast_thread():
     # Send all enqueued messages to each client
     while True:
-        while not msgQueue.empty():
-            msgQueue_lock.acquire()
-            msg = msgQueue.get()
-            msgQueue_lock.release()
+        while not g_msgQueue.empty():
+            lock_msgQueue.acquire()
+            msg = g_msgQueue.get()
+            lock_msgQueue.release()
 
-            clientList_lock.acquire()
-            for client in clientList:
+            lock_clientList.acquire()
+            for client in g_clientList:
                 client.send(msg)
-            clientList_lock.release()
+            lock_clientList.release()
 
 def server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -77,9 +77,9 @@ def server():
         #Accept connections from within while loop
         conn, address = s.accept() 
         print('Connection from: {}'.format(address))
-        clientList_lock.acquire()
-        clientList.append(conn)
-        clientList_lock.release()
+        lock_clientList.acquire()
+        g_clientList.append(conn)
+        lock_clientList.release()
         # Start a thread for the client.
         t1 = threading.Thread(target=client_thread, args=((conn, address)))
         t1.start()
