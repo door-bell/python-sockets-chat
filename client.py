@@ -26,12 +26,17 @@ def listen(sock, HOST, PORT):
         stdout_lock.release()
 
 def client(sock, nick='Default'):
+    print('Sending nickname...')
+    sock.send(nick.encode())
+    print('Waiting for OK signal...')
+    if sock.recv(1024).decode() != 'OK':
+        print('That name is invalid or already in use.')
+        return
+
+    print('\nConnected Successfully!\n') 
     t1 = threading.Thread(target=listen, args=(sock, HOST, PORT), daemon=True)
     t1.start()
-    print('\nConnected Successfully!\n') 
     
-    sock.send(buildCommand(nick, 'hello').encode())
-
     while True:
         message = input('{} > '.format(nick))  # take input
         stdout_lock.acquire()
