@@ -6,10 +6,9 @@ from queue import Queue
 HOST = '127.0.0.1'
 PORT = 8555
 
-g_clientList = list()
 g_clientDict = dict()
 g_msgQueue = Queue()
-lock_clientList = threading.Lock()
+
 lock_clientDict = threading.Lock()
 lock_msgQueue = threading.Lock()
 
@@ -61,10 +60,6 @@ def client_thread(sock, address, nick):
 
     sock.send('\nGoodbye!'.encode())
     sock.close()
-    # lock_clientList.acquire()
-    # g_clientList.remove(sock)
-    # print('Removed {} from clientList'.format(sock))
-    # lock_clientList.release()
     lock_clientDict.acquire()
     g_clientDict.pop(nick)
     lock_clientDict.release()
@@ -79,10 +74,6 @@ def broadcast_thread():
             msg = g_msgQueue.get()
             lock_msgQueue.release()
 
-            # lock_clientList.acquire()
-            # for client in g_clientList:
-            #     client.send(msg)
-            # lock_clientList.release()
             lock_clientDict.acquire()
             for sock in g_clientDict.values():
                 sock.send(msg)
@@ -117,10 +108,6 @@ def server():
 
         conn.settimeout(None)
         conn.send('OK'.encode()) # Send OK signal
-        # print('Waiting for handshake from: {}'.format(address))
-        # lock_clientList.acquire()
-        # g_clientList.append(conn)
-        # lock_clientList.release()
         lock_clientDict.acquire()
         g_clientDict[nick] = conn
         lock_clientDict.release()
