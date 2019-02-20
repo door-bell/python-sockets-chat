@@ -41,8 +41,11 @@ def handleCommand(cmd, sock):
         lock_clientDict.acquire()
         dest = g_clientDict[command[1]]
         lock_clientDict.release()
-        msg = ' '.join(command[2:])
-        dest.send('Whisper from {}: {}'.format(nick, msg).encode())
+        join = ' '.join(command[2:])
+        msg = 'Whisper to {}: {}'.format(command[1], join).encode()
+        sock.send(msg)
+        msg = 'Whisper from {}: {}'.format(nick, join).encode()
+        dest.send(msg)
 
 def client_thread(sock, address, nick):
     while True:
