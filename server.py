@@ -90,7 +90,7 @@ def server():
     s.listen(5)
 
     # Open thread to broadcast to connected clients
-    broadcastThread = threading.Thread(target=broadcast_thread)
+    broadcastThread = threading.Thread(target=broadcast_thread, daemon=True)
     broadcastThread.start()
 
 
@@ -118,7 +118,7 @@ def server():
         g_clientDict[nick] = conn
         lock_clientDict.release()
         # Start a thread for the client.
-        t1 = threading.Thread(target=client_thread, args=(conn, address, nick))
+        t1 = threading.Thread(target=client_thread, args=(conn, address, nick), daemon=True)
         t1.start()
 
 
