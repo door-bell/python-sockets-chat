@@ -28,15 +28,22 @@ def enqueueMessage(msg):
 
 def handleCommand(cmd, sock):
     nick, command = re.match(r'(.+): /(.+)', cmd).groups()
-
+    command = command.split(' ')
     print('Received command {} from {}'.format(command, nick))
 
     # Commands
-    if command == 'hello':
+    if command[0] == 'hello':
         lock_clientDict.acquire()
         g_clientDict[nick] = sock
         lock_clientDict.release()
         enqueueMessage('{} has connected!'.format(nick))
+
+    if command[0] == 'w':
+        lock_clientDict.acquire()
+        dest = g_clientDict[command[1]]
+        lock_clientDict.release()
+        msg = ' '.join(command[2:])
+        dest.send('Whisper from {}: {}'.format(nick, msg).encode())
 
 def client_thread(sock, address, nick):
     while True:
@@ -46,7 +53,7 @@ def client_thread(sock, address, nick):
         print(address, ' ', msg)
 
         # The / of a command should be 2 characters right of :
-        if len(msg) == len(nick) + 3 and msg[msg.index(':') + 2] is '/':
+        if len(msg) >= len(nick) + 3 and msg[msg.index(':') + 2] is '/':
             handleCommand(msg, sock)
             continue
 
