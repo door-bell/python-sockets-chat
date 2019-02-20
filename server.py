@@ -18,7 +18,7 @@ def verifyNick(nick):
         return False
     if nick in g_clientDict:
         return False
-        
+
     return True
 
 def enqueueMessage(msg):
@@ -77,7 +77,7 @@ def broadcast_thread():
             #     client.send(msg)
             # lock_clientList.release()
             lock_clientDict.acquire()
-            for key, sock in g_clientDict.items():
+            for sock in g_clientDict.values():
                 sock.send(msg)
             lock_clientDict.release()
 
