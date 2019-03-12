@@ -32,10 +32,7 @@ def handleCommand(cmd, sock):
 
     # Commands
     if command[0] == 'hello':
-        lock_clientDict.acquire()
-        g_clientDict[nick] = sock
-        lock_clientDict.release()
-        enqueueMessage('{} has connected!'.format(nick))
+        enqueueMessage('{} greets everyone.'.format(nick))
 
     if command[0] == 'w':
         lock_clientDict.acquire()
