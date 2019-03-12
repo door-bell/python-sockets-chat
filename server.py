@@ -25,9 +25,8 @@ def enqueueMessage(msg):
     g_msgQueue.put(msg.encode())
     lock_msgQueue.release()
 
-def handleCommand(cmd, sock):
-    nick, command = re.match(r'(.+): /(.+)', cmd).groups()
-    command = command.split(' ')
+def handleCommand(cmd, nick, sock):
+    command = cmd[1:].split(' ')
     print('Received command {} from {}'.format(command, nick))
 
     # Commands
@@ -53,7 +52,7 @@ def client_thread(sock, address, nick):
 
         # The / of a command should be 2 characters right of :
         if msg[0] is '/':
-            handleCommand(msg, sock)
+            handleCommand(msg, nick, sock)
             continue
 
         enqueueMessage('{}: {}'.format(nick, msg))
