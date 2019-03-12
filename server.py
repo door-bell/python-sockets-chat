@@ -98,12 +98,15 @@ def server():
     # Accept connections and open a thread for each one
     while True:
         #Accept connections from within while loop
+        nick = None
         conn, address = s.accept() 
         conn.settimeout(3)
         try:
             nick = conn.recv(1024).decode()
             if not verifyNick(nick):
                 raise Exception('Invalid nickname: {}'.format(nick))
+            else:
+                print("New connection: {}".format(nick))
         except Exception as ex:
             print(ex)
             conn.close()
