@@ -94,7 +94,6 @@ def server():
     broadcastThread = threading.Thread(target=broadcast_thread, daemon=True)
     broadcastThread.start()
 
-
     # Accept connections and open a thread for each one
     while True:
         #Accept connections from within while loop
