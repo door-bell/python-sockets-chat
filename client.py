@@ -42,7 +42,7 @@ def client(sock, nick='Default'):
         stdout_lock.acquire()
         sys.stdout.write('\033[F\033[K')
         stdout_lock.release()
-        sock.send('{}: {}'.format(nick, message).encode())
+        sock.send(message.encode())
         if message.endswith('later'):
             break
 

@@ -52,14 +52,14 @@ def client_thread(sock, address, nick):
         msg = sock.recv(1024).decode()
         if len(msg) is 0: # Detect abrupt disconnect
             break
-        print(address, ' ', msg)
+        print(address, ' ', nick, ':', msg)
 
         # The / of a command should be 2 characters right of :
-        if len(msg) >= len(nick) + 3 and msg[msg.index(':') + 2] is '/':
+        if msg[0] is '/':
             handleCommand(msg, sock)
             continue
 
-        enqueueMessage(msg)
+        enqueueMessage('{}: {}'.format(nick, msg))
 
     sock.send('\nGoodbye!'.encode())
     sock.close()
