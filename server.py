@@ -13,12 +13,7 @@ lock_clientDict = threading.Lock()
 lock_msgQueue = threading.Lock()
 
 def verifyNick(nick):
-    if ':' in nick:
-        return False
-    if nick in g_clientDict:
-        return False
-
-    return True
+    return nick not in g_clientDict
 
 def enqueueMessage(msg):
     lock_msgQueue.acquire()
