@@ -38,7 +38,7 @@ def client(sock, nick='Default'):
     t1.start()
     
     while True:
-        message = input('{} > '.format(nick))  # take input
+        message = input()  # take input
         stdout_lock.acquire()
         sys.stdout.write('\033[F\033[K')
         stdout_lock.release()
