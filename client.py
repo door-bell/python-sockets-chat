@@ -14,7 +14,7 @@ PORT = 8555
 stdout_lock = threading.Lock()
 
 def buildCommand(nick, cmd):
-    return '{}: /{}'.format(nick, cmd)
+    return f'{nick}: /{cmd}'
 
 def listen(sock, HOST, PORT):
     while True:

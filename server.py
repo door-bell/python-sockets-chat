@@ -22,19 +22,19 @@ def enqueueMessage(msg):
 
 def handleCommand(cmd, nick, sock):
     command = cmd[1:].split(' ')
-    print('Received command {} from {}'.format(command, nick))
+    print(f'Received command {command} from {nick}')
 
     # Commands
     if command[0] == 'hello':
-        enqueueMessage('{} greets everyone.'.format(nick))
+        enqueueMessage(f'{nick} greets everyone.')
     elif command[0] == 'w':
         lock_clientDict.acquire()
         dest = g_clientDict[command[1]]
         lock_clientDict.release()
         join = ' '.join(command[2:])
-        msg = 'Whisper to {}: {}'.format(command[1], join).encode()
+        msg = f'Whisper to {command[1]}: {join}'.encode()
         sock.send(msg)
-        msg = 'Whisper from {}: {}'.format(nick, join).encode()
+        msg = f'Whisper from {nick}: {join}'.encode()
         dest.send(msg)
 
 def client_thread(sock, address, nick):
@@ -49,14 +49,14 @@ def client_thread(sock, address, nick):
             handleCommand(msg, nick, sock)
             continue
 
-        enqueueMessage('{}: {}'.format(nick, msg))
+        enqueueMessage(f'{nick}: {msg}')
 
     sock.send('\nGoodbye!'.encode())
     sock.close()
     lock_clientDict.acquire()
     g_clientDict.pop(nick)
     lock_clientDict.release()
-    print('Removed {} from clientDict'.format(nick))
+    print(f'Removed {nick} from clientDict')
     return 0
 
 def broadcast_thread():
@@ -75,7 +75,7 @@ def broadcast_thread():
 def server():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    print('Starting server at {}'.format(HOST))
+    print(f'Starting server at {HOST}')
     s.bind((HOST, PORT))
 
     s.listen(5)
@@ -93,9 +93,9 @@ def server():
         try:
             nick = conn.recv(1024).decode()
             if not verifyNick(nick):
-                raise Exception('Invalid nickname: {}'.format(nick))
+                raise Exception(f'Invalid nickname: {nick}')
             else:
-                print("New connection: {}".format(nick))
+                print(f'New connection: {nick}')
         except Exception as ex:
             print(ex)
             conn.close()
