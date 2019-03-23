@@ -18,6 +18,9 @@ This repo contains a client and server application that communicates using my ow
 | Feb 16 	|  0.33 	|  4.91 	|
 | Feb 17 	|   2   	|  6.91 	|
 | Feb 19 	|  1.66 	|  8.57 	|
+| Mar 12    |  0.5      |  9.07     |
+| Mar 21    |  0.2      |  9.27     |
+| Mar 22    |  0.1      |  9.37     |
 
 ## View commits and specific times in the Terminal:
 
