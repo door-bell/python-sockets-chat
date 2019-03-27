@@ -1,0 +1,13 @@
+Client achievements:
+    The client no longer uses a global socket variable, instead it 
+    passes it along as a parameter to follow better programming practices. 
+    
+Server achievements:
+    I realized that the previous server would not send messages 
+    to everyone as soon as they are received as a chat server 
+    should, so I created a separate thread for message broadcasting.
+    This means that multiple connected clients can both send and 
+    receive messages simultaneously (yay!). 
+
+This is also the last commit of the first day of binge programming 
+this project.

@@ -1,0 +1,18 @@
+At this point in development, I was facing the issue of 
+the client-side code not taking input very nicely.
+I wanted the prompt on the last line of output, and messages
+to be inserted above it. Over the next few commits up to this version,
+I tried my very best to solve this issue. However, after many hours 
+of fiddling and researching special escape characters, I realized
+that it was more trouble than it was worth, considering this is 
+a *networking* project. 
+
+However, there was still a major change in terms of 
+the protocol:
+
+Starting off I had no clear vision of how the protocol should 
+look, but in this iteration it took its form. I came up with 
+the following message format for the application messages:
+    {NICKNAME}: {MESSAGE}
+The client sends a message like this, and the server simply 
+echoes this out to all other connected clients.

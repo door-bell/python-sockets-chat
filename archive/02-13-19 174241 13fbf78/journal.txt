@@ -1,0 +1,12 @@
+This very small iteration contained a few changes:
+
+Client changes:
+    I started to use stdout instead of the plain print function
+    in order to keep output consistent (my dreams of a pretty CLI
+    were still kicking)
+
+Server changes:
+    I added mutex locks to the global variables in order to 
+    prevent two threads from using the variables at the same time.
+    This prevents any possible race conditions and other non-deterministic
+    nightmares (though I never experienced one in development).

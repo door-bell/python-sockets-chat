@@ -1,0 +1,15 @@
+This version was where I finally came to a concrete 
+form of my protocol. 
+
+The client's first message to the server is still the desired 
+nickname. The client will receive an "OK" message if the nickname is valid, 
+and then any messages the clients send is now considered a message by the 
+server. The main change is in the format of these messages.
+
+Before, the client sent a nickname and a the text of the message with each 
+message. This meant that someone could potentially send a message with someone 
+else's nickname. 
+
+BUT: now, the client only sends the text of their message. The server keeps track of 
+who sent the messages by keeping the 'nickname' variable local to each client's 
+individual thread.

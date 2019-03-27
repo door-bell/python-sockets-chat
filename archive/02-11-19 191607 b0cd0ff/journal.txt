@@ -1,0 +1,19 @@
+In this iteration, I fixed the broken pipe error from 
+the last version, and made big progress in multi-threading the
+server.
+
+Client achievements:
+    I moved around some of the socket code and fixed the broken
+    pipe error: The while true loop for the listen thread works!
+    
+    The client has a bit of a nicer input prompt, and must wait one
+    second before sending another message (this is implemented in 
+    the client side, so technically they don't need to wait)
+
+Server achievements:
+    The server was completely rewritten.
+    
+    The server is now multi-threaded. The main thread listens 
+    for new connections, and when a new connection is opened it 
+    creates a 'client thread' that first waits for a message from 
+    the client and then sends the message to the client.

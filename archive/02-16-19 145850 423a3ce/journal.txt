@@ -1,0 +1,4 @@
+Server achivements:
+    Added command parsing code. In this iteration, any message that 
+    begins with a / is considered a command. The user's message is passed 
+    to handleCommand() to handle whatever functionality is necessary.

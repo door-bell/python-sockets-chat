@@ -1,0 +1,24 @@
+At this point I was having issues implementing a potential 
+"whisper" command, because it would be impossible to tell 
+which socket belongs to which nickname. So, I re-factored much
+of the server side code.
+Additionally, I had a change in philosophy for the protocol's 
+message order, so this is a pretty big version.
+
+Protocol (client + sever):
+    Now, the client's first message to the server must be their 
+    desired nickname to avoid duplicate nicknames. The client can 
+    assume if it does not get an OK signal that the nickname is 
+    in use or is invalid in some other way.
+
+Server:
+    Re-factored how we keep track of clients. Now, they are 
+    stored in a dictionary mapping nicknames -> socket objects.
+    This will enable the server to target particular nicknames when
+    sending messages. 
+    This changed involved lots of renaming but also lots of re-considering 
+    how to detect commands and broadcast messages. 
+    This also made it possible to detect nicknames that are already in use.
+
+My code was starting to get ugly at this point, particularly in 
+the handling of commands.

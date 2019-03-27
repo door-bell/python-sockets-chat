@@ -1,0 +1,13 @@
+This version only included changes in the server code.
+
+Server:
+    Properly check for duplicate nicknames
+    Iterate through clients properly when broadcasting.
+    Make broadcast thread a daemon. This thread is constantly running when
+    the server is on, so it is convenient to not need to close the thread 
+    when the server is closed.
+
+    Re-factor command parsing so that we can get the arguments in a more 
+    convenient way. 
+    Implement a whisper command: Since we are now keeping track of 
+    nicknames, we can send messages to specific sockets. 

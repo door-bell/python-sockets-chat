@@ -1,0 +1,24 @@
+Client achievements:
+    Added a mutex for writing to stdout (turns out sys.stdout.write
+    is not thread safe).
+
+    I added a keyword "later" that would indicate the client intends to 
+    disconnect from the server. This is much more graceful than the 
+    abrupt CTRL+C disconnects I was using before, but also not exactly ideal 
+    since a user might want to end their message with "later" but not disconnect.
+
+    After researching the threading library docs, I learned that there is 
+    an option for the Thread object that makes it a daemon, which means 
+    that the thread will exit if the main thread exits. This is a much better 
+    practice because we no longer have to exit these threads before 
+    exiting the program (which I wasn't doing in the first place: oops)
+        I made the listen thread a daemon so that it would close with the main
+        thread.
+
+Server achievements: 
+    I learned that a thread should return a value after it is done running, 
+    otherwise python gets angry. So, I added a return value to the client thread 
+    so that disconnected clients would have their thread closed. 
+
+    The server also checks for this "later" keyword and breaks out of the 
+    infinite loop of receiving messages if the client's message ends with it.

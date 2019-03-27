@@ -1,0 +1,21 @@
+From the initial commit to this version, I used the following "guide" 
+in supplement to my guide to get things up and running quickly:
+
+https://www.journaldev.com/15906/python-socket-programming-server-client
+
+I believe that this article contained some code that I used, but now 
+for whatever reason I can't find it anywhere. I know that I used this 
+guide because I included it in a commit message (9364838).
+---------------------
+Anyway, the main achievement in this iteration is that I learned to use 
+the threading library to "listen" for messages from the server in the 
+background while still taking input. However, the listen method is connecting 
+to a socket from within a while true loop, so it's clearly not refined in any way.
+
+At this point I was getting a 'broken pipe error' which probably 
+had to do with the very broken while true loop.
+
+An additional note: I realized that quitting the client program would 
+result in the server getting flooded with empty messages. This is why 
+the client_thread method checks "if not msg" in order to break out and 
+close the socket if it detects the client quit the program / disconnected.

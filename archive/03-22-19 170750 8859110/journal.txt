@@ -1,0 +1,14 @@
+From the last version to this one, there was a lot of 
+polishing of the code and a little change in functionality.
+
+Server:
+    The hello command is now a novelty command, it no longer
+    is a part of the core protocol.
+
+
+A list of minor changes include:
+    Moving/removing whitespace
+    Fixing command parsing (no more regex required!)
+    Changing the nickname verification method to look nicer
+    Switch all strings over to fstrings (Python 3)
+    Remove input prompt since I could never keep things pretty anyway
