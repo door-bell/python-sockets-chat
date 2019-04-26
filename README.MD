@@ -4,7 +4,7 @@ This repo contains a client and server application that communicates using my ow
 
 ## The Protocol:
 
-`diagram coming soon`
+![Protocol Diagram](https://i.imgur.com/7DELfay.jpg)
 
 # Work hours
 
