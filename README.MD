@@ -6,6 +6,10 @@ This repo contains a client and server application that communicates using my ow
 
 ![Protocol Diagram](https://i.imgur.com/7DELfay.jpg)
 
+## The Server Implementation
+
+![Server Diagram](https://i.imgur.com/s88R4fP.jpg)
+
 # Work hours
 
 |  Date  	| Hours 	| Total 	|
