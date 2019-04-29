@@ -2,9 +2,35 @@
 
 This repo contains a client and server application that communicates using my own application layer protocol over TCP.
 
+## Setup
+
+The code should work out of the box, just verify python version (at least 3.6):
+
+```
+$ python --version
+Python 3.7.2
+```
+
+Start the server:
+
+```
+$ python server.py
+Starting server at 127.0.0.1
+```
+
+Start clients (up to 5) in separate terminals:
+```
+$ python client.py
+...
+```
+
+By default, the client automatically connects to 127.0.0.1:8555 without prompting for an IP address/port.
+
+If you run into issues, check `/etc/hosts` or the windows `C:\Windows\System32\Drivers\etc\hosts` and look for an IP address that might work as a subsitute to 127.0.0.1, like `localhost` or your computer's hostname. Then, simply change the `HOST = ...` line in server.py and client.py to use that IP address.
+
 ## The Protocol:
 
-![Protocol Diagram](https://i.imgur.com/7DELfay.jpg)
+![Protocol Diagram](https://i.imgur.com/A5WZoMu.jpg)
 
 ## The Server Implementation
 
